@@ -1,30 +1,57 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div class="container">
+    <PostList @remove="removePost" :posts="posts"></PostList>
+    <PostForm @create="createPost"></PostForm>
+  </div>
 </template>
 
+<script>
+//Импортирую компоненты
+import PostList from "@/components/postList";
+import PostForm from "@/components/form";
+export default {
+  //регистрирую импортированные компоненты
+  components: {
+    PostList,
+    PostForm,
+  },
+  data() {
+    return {
+      posts: [
+        {
+          id: 1,
+          title: "Поможем подобрать мебель под ваш интерьер",
+          text: "Используйте наш калькулятор, чтобы подобрать подходящий для вас вариант",
+        },
+        {
+          id: 2,
+          title: "Поможем подобрать мебель под ваш интерьер",
+          text: "Используйте наш калькулятор, чтобы подобрать подходящий для вас вариант",
+        },
+      ],
+    };
+  },
+  methods: {
+    createPost(data) {
+      this.posts.push(data);
+    },
+    removePost(post) {
+      console.log(post)
+     this.posts= this.posts.filter((p) => p.id !== post.id);
+    },
+  },
+};
+</script>
+
 <style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+//scoped для стилей если хотим сделать стили только для компонента
+@import "modern-normalize/modern-normalize.css";
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 0 1vw;
 }
 </style>

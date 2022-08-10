@@ -1,4 +1,6 @@
-# moviecast
+# Vue3 lessons from YT 
+See [Link to lesson](https://www.youtube.com/watch?v=XzLuMtDelGk&ab_channel=UlbiTV).
+
 
 ## Project setup
 ```

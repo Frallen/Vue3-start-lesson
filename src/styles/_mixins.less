@@ -1,0 +1,42 @@
+@import "_variables.less";
+
+.green-button {
+  background: @green;
+  border-radius: 4px;
+  color: #fff;
+  padding: 21px 15px;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 100%;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  .trs();
+  cursor: pointer;
+}
+.green-button-hover {
+  .green-button-dark();
+  .trs();
+}
+.green-button:hover {
+  .green-button-dark();
+  .trs();
+}
+.green-button-dark {
+  .green-button();
+  background: @green-dark;
+}
+.green-button-light {
+  .green-button();
+  background: transparent;
+  color: @green-hover;
+  border: 1px solid @green;
+}
+.gray-button {
+  .green-button();
+  background: @gray;
+  color: #fff;
+}
+.trs {
+  transition: all 0.3s;
+}
