@@ -28,10 +28,10 @@ input {
   border: 1px solid #e1dfde;
   border-radius: 4px;
   padding: 15px 20px;
-  padding-top: 23px;
   outline: none;
   transition: all 0.3s ease;
   display: block;
   font-size: 15px;
+  width: 100%;
 }
 </style>

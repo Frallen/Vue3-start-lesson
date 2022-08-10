@@ -1,7 +1,11 @@
 <template>
   <div class="container">
+    <h3>Текущие посты</h3>
     <PostList @remove="removePost" :posts="posts"></PostList>
-    <PostForm @create="createPost"></PostForm>
+    <greenbutton @click="showDialog">Добавить новые посты</greenbutton>
+    <modal v-model:show="visibleModal"
+      ><PostForm @create="createPost"></PostForm
+    ></modal>
   </div>
 </template>
 
@@ -29,15 +33,19 @@ export default {
           text: "Используйте наш калькулятор, чтобы подобрать подходящий для вас вариант",
         },
       ],
+      visibleModal: false,
     };
   },
   methods: {
+    showDialog() {
+      this.visibleModal = true;
+    },
     createPost(data) {
       this.posts.push(data);
+      this.visibleModal = false;
     },
     removePost(post) {
-      console.log(post)
-     this.posts= this.posts.filter((p) => p.id !== post.id);
+      this.posts = this.posts.filter((p) => p.id !== post.id);
     },
   },
 };

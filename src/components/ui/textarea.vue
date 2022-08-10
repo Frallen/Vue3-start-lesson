@@ -27,5 +27,6 @@ textarea {
   line-height: 170%;
   color: #262626;
   resize: none;
+  padding: 15px 20px;
 }
 </style>

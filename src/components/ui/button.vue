@@ -1,18 +1,19 @@
 <template>
-<button class="green-button"><slot></slot></button>
+  <button class="green-button"><slot></slot></button>
 </template>
 
 <script>
 export default {
   //имя компонета по которому его можно вызвать
-  name: "greenbutton"
-}
+  name: "greenbutton",
+};
 </script>
 
 <style lang="less" scoped>
-button{
+button {
   text-decoration: none;
   outline: none;
   border: none;
+  width: 100%;
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="form-box">
     <h3>Создайте новый пост</h3>
     <form @submit.prevent="submitpost($event)" class="form">
-      <default-input class="form-item" v-model="post.title"></default-input>
+      <default-input class="form-item" v-model.trim="post.title"></default-input>
       <default-textarea
         class="form-item"
         v-model="post.text"
@@ -46,9 +46,12 @@ export default {
 
 <style lang="less" scoped>
 .form-box {
-  margin-top: 20px;
+  margin: auto;
+  height: fit-content;
   padding: 10px;
   box-shadow: 0 1px 4px 2px #eee;
+  background: #fff;
+
 }
 .form {
   &-item {
