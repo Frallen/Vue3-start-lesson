@@ -20,7 +20,7 @@ export default {
       post: {
         id: null,
         title: "",
-        text: "",
+        body: "",
       },
     };
   },
@@ -37,7 +37,7 @@ export default {
       this.post = {
         id: null,
         title: "",
-        text: "",
+        body: "",
       };
     },
   },

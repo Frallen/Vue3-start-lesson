@@ -2,7 +2,7 @@
   <div class="post-item">
     <div>
       <h3>{{ post.title }}</h3>
-      <p>{{ post.text }}</p>
+      <p>{{ post.body }}</p>
     </div>
     <!--
     По нажатию на крестик(свг) я передаю в родительский компонент тот пост по котрому был клик
@@ -35,6 +35,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <style lang="less" scoped>
