@@ -4,10 +4,15 @@
     <div class="menu">
       <greenbutton @click="showDialog">Добавить новые посты</greenbutton
       ><Select v-model="selectedSort" :options="sortedOption"></Select>
+      <default-input v-model="searchQuery"></default-input>
     </div>
     <preloader v-if="isLoading"></preloader>
-    <PostList v-else @remove="removePost" :posts="sortedPosts"></PostList>
-
+    <PostList
+      v-else
+      @remove="removePost"
+      :posts="sortedSearchedPosts"
+    ></PostList>
+    <Pagination v-model="currentPage" :totalPages="totalPages"></Pagination>
     <modal v-model:show="visibleModal"
       ><PostForm @create="createPost"></PostForm
     ></modal>
@@ -21,13 +26,17 @@ import PostForm from "@/components/form";
 import preloader from "@/components/ui/preloader";
 import Select from "@/components/ui/select";
 import axios from "axios";
+import DefaultInput from "@/components/ui/input";
+import Pagination from "@/components/ui/pagination";
 export default {
   //регистрирую импортированные компоненты
   components: {
+    DefaultInput,
     PostList,
     PostForm,
     preloader,
     Select,
+    Pagination,
   },
   data() {
     return {
@@ -35,6 +44,11 @@ export default {
       visibleModal: false,
       isLoading: true,
       selectedSort: "",
+      searchQuery: "",
+      page: 1,
+      limit: 10,
+      totalPages: 0,
+      currentPage: 1,
       sortedOption: [
         { value: "title", name: "По названию" },
         { value: "body", name: "По содержимому" },
@@ -56,17 +70,24 @@ export default {
   },
   //вызывается только при изменении зависимости в computed
   // computed запоминает результат фильтрации, как кэширование
-  computed:{
+  computed: {
     //вызывать эту функцию не надо, она используется как обычная переменная
     //:posts="sortedPosts"
-    sortedPosts(){
-      return[...this.posts].sort((post1,post2)=>{
+    sortedPosts() {
+      return [...this.posts].sort((post1, post2) => {
         //сравнение одного поста другим по названию или описанию
-        return post1[this.selectedSort]?.localeCompare(post2[this.selectedSort])
-      })
-    }
-  }
-  ,
+        return post1[this.selectedSort]?.localeCompare(
+          post2[this.selectedSort]
+        );
+      });
+    },
+    //поиск по строке в инпуте
+    sortedSearchedPosts() {
+      return this.sortedPosts.filter((post) =>
+        post.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
+  },
   methods: {
     showDialog() {
       this.visibleModal = true;
@@ -81,10 +102,19 @@ export default {
     async fetchPosts() {
       try {
         this.isLoading = true;
-        let data = await axios
-          .get("https://jsonplaceholder.typicode.com/posts?_limit=10")
-          .then((resp) => resp.data);
-        this.posts = data;
+        let response = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts",
+          {
+            params: {
+              _page: this.page,
+              _limit: this.limit,
+            },
+          }
+        );
+        this.totalPages = Math.ceil(
+          response.headers["x-total-count"] / this.limit
+        );
+        this.posts = response.data;
       } catch (e) {
       } finally {
         this.isLoading = false;
