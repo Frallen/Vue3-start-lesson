@@ -1,6 +1,12 @@
 <template>
-  <div class="pagination" v-for="page in totalPages" @click="selectedPage">
-    <div class="pagination-item" :key="page" @click="">
+  <div class="pagination">
+    <div
+      class="pagination-item"
+      :class="{ 'current-page': currentPage === page }"
+      :key="page"
+      v-for="page in totalPages"
+      @click="$emit('changePage',page)"
+    >
       {{ page }}
     </div>
   </div>
@@ -18,13 +24,9 @@ export default {
     },
     currentPage: {
       type: Number,
-      default: 1,
     },
   },
   methods: {
-    selectedPage(event) {
-      this.$emit("update:modelValue", event.target.value);
-    },
   },
 };
 </script>
@@ -34,10 +36,20 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 1em 0;
   &-item {
     color: #000;
     border-radius: 10px;
+    border: 1px solid #000;
     padding: 12px;
+    margin-left: 10px;
   }
+  &-item:first-child {
+    margin-left: 0;
+  }
+}
+.current-page {
+  color: #fff;
+  background: #000;
 }
 </style>

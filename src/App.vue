@@ -12,7 +12,11 @@
       @remove="removePost"
       :posts="sortedSearchedPosts"
     ></PostList>
-    <Pagination v-model="currentPage" :totalPages="totalPages"></Pagination>
+    <Pagination
+      :current-page="currentPage"
+      :totalPages="totalPages"
+      @changePage="changePage"
+    ></Pagination>
     <modal v-model:show="visibleModal"
       ><PostForm @create="createPost"></PostForm
     ></modal>
@@ -45,10 +49,9 @@ export default {
       isLoading: true,
       selectedSort: "",
       searchQuery: "",
-      page: 1,
+      currentPage: 1,
       limit: 10,
       totalPages: 0,
-      currentPage: 1,
       sortedOption: [
         { value: "title", name: "По названию" },
         { value: "body", name: "По содержимому" },
@@ -99,6 +102,10 @@ export default {
     removePost(post) {
       this.posts = this.posts.filter((p) => p.id !== post.id);
     },
+    changePage(val) {
+      this.currentPage = val;
+      this.fetchPosts();
+    },
     async fetchPosts() {
       try {
         this.isLoading = true;
@@ -106,11 +113,12 @@ export default {
           "https://jsonplaceholder.typicode.com/posts",
           {
             params: {
-              _page: this.page,
+              _page: this.currentPage,
               _limit: this.limit,
             },
           }
         );
+        // округление кол-ва страниц в большую сторону, чтобы оставшиеся посты перенслись на следущую страницу
         this.totalPages = Math.ceil(
           response.headers["x-total-count"] / this.limit
         );
