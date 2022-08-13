@@ -1,15 +1,14 @@
 <template>
   <div class="post-item">
     <div>
-      <h3>{{ post.title }}</h3>
+      <h3 @click="$router.push(`/post/${post.id}`)">{{ post.title }}</h3>
       <p>{{ post.body }}</p>
     </div>
     <!--
     По нажатию на крестик(свг) я передаю в родительский компонент тот пост по котрому был клик
     -->
     <svg
-
-        @click="$emit('remove',post)"
+      @click="$emit('remove', post)"
       xmlns="http://www.w3.org/2000/svg"
       x="0px"
       y="0px"
@@ -35,7 +34,6 @@ export default {
     },
   },
 };
-
 </script>
 
 <style lang="less" scoped>
@@ -49,6 +47,9 @@ export default {
   svg {
     cursor: pointer;
   }
+}
+h3 {
+  cursor: pointer;
 }
 .post-item:first-child {
   margin-top: 0;
