@@ -3,8 +3,8 @@ import { PostModule } from "@/store/postModule";
 
 export default createStore({
   modules: {
-    //регистрируем модуль и обращаемся через переменную post
-    post: PostModule,
+    //регистрируем модуль и обращаемся через переменную posts
+    posts: PostModule,
   },
   /*  state: {
     likes: 2,

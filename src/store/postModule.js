@@ -1,6 +1,8 @@
 import axios from "axios";
 
 export const PostModule = {
+  // задается область имен, для обращения к конкретному стору т.к логика может дублироватся
+  namespaced: true,
   state: () => ({
     posts: [],
     visibleModal: false,
@@ -15,22 +17,22 @@ export const PostModule = {
       { value: "body", name: "По содержимому" },
     ],
   }),
-    // Работает так же как computed
+  // Работает так же как computed
   getters: {
-      sortedPosts(state) {
-          return [...state.posts].sort((post1, post2) => {
-              //сравнение одного поста другим по названию или описанию
-              return post1[state.selectedSort]?.localeCompare(
-                  post2[state.selectedSort]
-              );
-          });
-      },
-      //поиск по строке в инпуте
-      sortedSearchedPosts(state,getters) {
-          return getters.sortedPosts.filter((post) =>
-              post.title.toLowerCase().includes(state.searchQuery.toLowerCase())
-          );
-      },
+    sortedPosts(state) {
+      return [...state.posts].sort((post1, post2) => {
+        //сравнение одного поста другим по названию или описанию
+        return post1[state.selectedSort]?.localeCompare(
+          post2[state.selectedSort]
+        );
+      });
+    },
+    //поиск по строке в инпуте
+    sortedSearchedPosts(state, getters) {
+      return getters.sortedPosts.filter((post) =>
+        post.title.toLowerCase().includes(state.searchQuery.toLowerCase())
+      );
+    },
   },
   mutations: {
     setPosts(state, posts) {
@@ -42,63 +44,69 @@ export const PostModule = {
     setPage(state, currentPage) {
       state.currentPage = currentPage;
     },
-    selectedSort(state, totalPages) {
-      state.totalPages = totalPages;
+    selectedSort(state, selectedSort) {
+      state.selectedSort = selectedSort;
     },
     setCurrentPage(state, currentPage) {
       state.currentPage = currentPage;
     },
-      SetTotalPages(state, totalPages) {
+    setSearchQuery(state, searchQuery) {
+      state.searchQuery = searchQuery;
+    },
+    SetTotalPages(state, totalPages) {
       state.totalPages = totalPages;
     },
   },
-  action: {
-      async fetchPosts({state,commit}) {
-          try {
-              //изменяю стейт
-              commit('isLoading',true)
-              let response = await axios.get(
-                  "https://jsonplaceholder.typicode.com/posts",
-                  {
-                      params: {
-                          _page: state.currentPage,
-                          _limit: state.limit,
-                      },
-                  }
-              );
-              // округление кол-ва страниц в большую сторону, чтобы оставшиеся посты перенслись на следущую страницу
-              commit('totalPages', Math.ceil(
-                  response.headers["x-total-count"] / state.limit
-              ))
-             commit("posts",response.data)
-          } catch (e) {
-          } finally {
-              commit('isLoading',false)
+  actions: {
+    async fetchPosts({ state, commit }) {
+      try {
+        //изменяю стейт
+        commit("setLoading", true);
+        let response = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts",
+          {
+            params: {
+              _page: state.currentPage,
+              _limit: state.limit,
+            },
           }
-      },
-      async LoadMorePosts({state,commit}) {
-          try {
-              commit('currentPage',state.currentPage++)
-              //    this.isLoading = true;
-              let response = await axios.get(
-                  "https://jsonplaceholder.typicode.com/posts",
-                  {
-                      params: {
-                          _page: state.currentPage,
-                          _limit: state.limit,
-                      },
-                  }
-              );
-              // округление кол-ва страниц в большую сторону, чтобы оставшиеся посты перенслись на следущую страницу
-              commit('totalPages', Math.ceil(
-                  response.headers["x-total-count"] / state.limit
-              ))
-              // закидываем имеющиеся посты и новые посты
-              commit('posts',[...this.posts, ...response.data])
-          } catch (e) {
-          } finally {
-              //  this.isLoading = false;
+        );
+        // округление кол-ва страниц в большую сторону, чтобы оставшиеся посты перенслись на следущую страницу
+        commit(
+          "SetTotalPages",
+          Math.ceil(response.headers["x-total-count"] / state.limit)
+        );
+        commit("setPosts", response.data);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        commit("setLoading", false);
+      }
+    },
+    async LoadMorePosts({ state, commit }) {
+      try {
+        commit("setCurrentPage", state.currentPage++);
+        //    this.isLoading = true;
+        let response = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts",
+          {
+            params: {
+              _page: state.currentPage,
+              _limit: state.limit,
+            },
           }
-      },
+        );
+        // округление кол-ва страниц в большую сторону, чтобы оставшиеся посты перенслись на следущую страницу
+        commit(
+          "SetTotalPages",
+          Math.ceil(response.headers["x-total-count"] / state.limit)
+        );
+        // закидываем имеющиеся посты и новые посты
+        commit("setPosts", [...state.posts, ...response.data]);
+      } catch (e) {
+      } finally {
+        commit("setLoading", false);
+      }
+    },
   },
 };
