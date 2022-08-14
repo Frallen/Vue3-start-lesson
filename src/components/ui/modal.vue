@@ -1,25 +1,19 @@
 <template>
   <div class="modal" v-if="show" @click.stop="hideDialog">
     <div @click.stop class="modal-wrapper">
-    <slot></slot>
+      <slot></slot>
     </div>
   </div>
 </template>
 
 <script>
+import Togglemixin from "@/mixins/togglemixin";
+
 export default {
   name: "modal",
-  props: {
-    show: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  methods:{
-    hideDialog() {
-     this.$emit("update:show",false)
-    }
-  }
+  //миксины это переиспользуемые однотипные методы, можно вынести повторяющуюся логику и ипортировать ее
+  // при монитровании будет происходить слияние с миксина с копмпонентом
+  mixins: [Togglemixin],
 };
 </script>
 
@@ -32,9 +26,8 @@ export default {
   bottom: 0;
   display: flex;
   background: rgba(0, 0, 0, 0.5);
-  &-wrapper{
+  &-wrapper {
     margin: auto;
   }
 }
-
 </style>

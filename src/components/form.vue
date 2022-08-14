@@ -5,7 +5,7 @@
       <default-input class="form-item" v-model.trim="post.title"></default-input>
       <default-textarea
         class="form-item"
-        v-model="post.text"
+        v-model="post.body"
       ></default-textarea>
       <greenbutton class="form-item">submit</greenbutton>
     </form>
