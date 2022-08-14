@@ -8,18 +8,18 @@
     </div>
     <preloader v-if="isLoading"></preloader>
     <PostList
-        v-else
-        @remove="removePost"
-        :posts="sortedSearchedPosts"
+      v-else
+      @remove="removePost"
+      :posts="sortedSearchedPosts"
     ></PostList>
-    <div ref="observer" class="observer"></div>
+    <div v-intersection="LoadMorePosts" class="observer"></div>
     <!-- <Pagination
       :current-page="currentPage"
       :totalPages="totalPages"
       @changePage="changePage"
     ></Pagination>-->
     <modal v-model:show="visibleModal"
-    ><PostForm @create="createPost"></PostForm
+      ><PostForm @create="createPost"></PostForm
     ></modal>
   </div>
 </template>
@@ -81,14 +81,14 @@ export default {
       return [...this.posts].sort((post1, post2) => {
         //сравнение одного поста другим по названию или описанию
         return post1[this.selectedSort]?.localeCompare(
-            post2[this.selectedSort]
+          post2[this.selectedSort]
         );
       });
     },
     //поиск по строке в инпуте
     sortedSearchedPosts() {
       return this.sortedPosts.filter((post) =>
-          post.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+        post.title.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     },
   },
@@ -112,17 +112,17 @@ export default {
       try {
         this.isLoading = true;
         let response = await axios.get(
-            "https://jsonplaceholder.typicode.com/posts",
-            {
-              params: {
-                _page: this.currentPage,
-                _limit: this.limit,
-              },
-            }
+          "https://jsonplaceholder.typicode.com/posts",
+          {
+            params: {
+              _page: this.currentPage,
+              _limit: this.limit,
+            },
+          }
         );
         // округление кол-ва страниц в большую сторону, чтобы оставшиеся посты перенслись на следущую страницу
         this.totalPages = Math.ceil(
-            response.headers["x-total-count"] / this.limit
+          response.headers["x-total-count"] / this.limit
         );
         this.posts = response.data;
       } catch (e) {
@@ -133,20 +133,20 @@ export default {
     //подгрузка постов при скроле вниз
     async LoadMorePosts() {
       try {
-        this.currentPage++
+        this.currentPage++;
         //    this.isLoading = true;
         let response = await axios.get(
-            "https://jsonplaceholder.typicode.com/posts",
-            {
-              params: {
-                _page: this.currentPage,
-                _limit: this.limit,
-              },
-            }
+          "https://jsonplaceholder.typicode.com/posts",
+          {
+            params: {
+              _page: this.currentPage,
+              _limit: this.limit,
+            },
+          }
         );
         // округление кол-ва страниц в большую сторону, чтобы оставшиеся посты перенслись на следущую страницу
         this.totalPages = Math.ceil(
-            response.headers["x-total-count"] / this.limit
+          response.headers["x-total-count"] / this.limit
         );
         // закидываем имеющиеся посты и новые посты
         this.posts = [...this.posts, ...response.data];
@@ -158,7 +158,7 @@ export default {
   },
   mounted() {
     this.fetchPosts();
-    let options = {
+    /*   let options = {
       rootMargin: "0px",
       threshold: 1.0,
     };
@@ -171,19 +171,18 @@ export default {
     // слежу за пересечением невидимого блока для подгрузки новых постов
     let observer = new IntersectionObserver(callback, options);
     //$refs это прямая ссылка на объект
-    observer.observe(this.$refs.observer);
+    observer.observe(this.$refs.observer);*/
   },
 };
 </script>
 
 <style lang="less" scoped>
-
 .menu {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.observer{
+.observer {
   height: 40px;
   margin-bottom: 20px;
 }
