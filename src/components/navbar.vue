@@ -2,10 +2,15 @@
   <div class="menu">
     <div class="container">
       <div class="menu-container">
-        <div class="menu-logo"><router-link to="/"><img src="./ui/img/logo.png" alt="" /></router-link></div>
+        <div class="menu-logo">
+          <router-link to="/"
+            ><img src="./ui/img/logo.png" alt=""
+          /></router-link>
+        </div>
         <ul class="menu-nav">
           <li @click="$router.push('/posts')">Посты</li>
           <li @click="$router.push('/about')">О нас</li>
+          <li @click="$router.push('/store')">Vuex посты</li>
         </ul>
       </div>
     </div>
@@ -41,15 +46,17 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    li{
+    li {
       margin-left: 10px;
+      color: @green;
+      cursor: pointer;
     }
-    a{
+    a {
       text-decoration: none;
       color: @green;
       font-size: 1em;
     }
-    li:first-child{
+    li:first-child {
       margin-left: 0;
     }
   }
