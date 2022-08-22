@@ -20,12 +20,10 @@ export const PostModule = {
   // Работает так же как computed
   getters: {
     sortedPosts(state) {
-      return [...state.posts].sort((post1, post2) => {
+      return [...state.posts].sort((post1, post2) =>
         //сравнение одного поста другим по названию или описанию
-        return post1[state.selectedSort]?.localeCompare(
-          post2[state.selectedSort]
-        );
-      });
+        post1[state.selectedSort]?.localeCompare(post2[state.selectedSort])
+      );
     },
     //поиск по строке в инпуте
     sortedSearchedPosts(state, getters) {
@@ -44,7 +42,7 @@ export const PostModule = {
     setPage(state, currentPage) {
       state.currentPage = currentPage;
     },
-    selectedSort(state, selectedSort) {
+    setSelectedSort(state, selectedSort) {
       state.selectedSort = selectedSort;
     },
     setCurrentPage(state, currentPage) {

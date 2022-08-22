@@ -7,8 +7,8 @@
    <button @click="$store.commit('decrementLikes')">уменьшить лайки</button>-->
     <div class="menu">
       <greenbutton @click="showDialog">Добавить новые посты</greenbutton
-      ><Select v-model="selectedSort" :options="sortedOption"></Select>
-      <default-input :modelValue="searchQuery" @change:modelValue="selectedSort"></default-input>
+      ><Select :modelValue="selectedSort" @update:modelValue="setSelectedSort" :options="sortedOption"></Select>
+      <default-input :modelValue="searchQuery" @update:modelValue="setSearchQuery"></default-input>
     </div>
     <preloader v-if="isLoading"></preloader>
     <PostList
@@ -77,7 +77,7 @@ export default {
       setCurrentPage:"posts/setCurrentPage",
       setPosts:"posts/setPosts",
       setLoading:"posts/setLoading",
-      selectedSort:"posts/selectedSort",
+      setSelectedSort:"posts/setSelectedSort",
       setSearchQuery:"posts/setSearchQuery"
 
     }),
