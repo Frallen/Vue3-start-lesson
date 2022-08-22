@@ -11,6 +11,7 @@
           <li @click="$router.push('/posts')">Посты</li>
           <li @click="$router.push('/about')">О нас</li>
           <li @click="$router.push('/store')">Vuex посты</li>
+          <li @click="$router.push('/composition')">Посты composition</li>
         </ul>
       </div>
     </div>

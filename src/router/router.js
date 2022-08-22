@@ -4,6 +4,7 @@ import postsPage from "@/pages/postsPage";
 import about from "@/pages/about";
 import { createRouter, createWebHistory } from "vue-router";
 import PostsPageWithStore from "@/pages/postsPageWithStore";
+import postsPageComposition from "@/pages/postsPageComposition";
 
 //Маршруты создаюся с помощью объектов
 const routes = [
@@ -26,6 +27,10 @@ const routes = [
   {
     path: "/store",
     component: PostsPageWithStore,
+  },
+  {
+    path: "/composition",
+    component: postsPageComposition,
   },
 ];
 const router = createRouter({
